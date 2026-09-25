@@ -1,69 +1,123 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
-export default function Home() {
+import { GENERAL_FAQS } from '@/lib/content';
+import { SERVICES } from '@/lib/services';
+import { faqSchema, itemListSchema, schemaGraph } from '@/lib/schema';
+import { JsonLd } from '@/components/JsonLd';
+import { Hero } from '@/components/Hero';
+import { About } from '@/components/About';
+import { Services } from '@/components/Services';
+import { Process } from '@/components/Process';
+import { WhyChooseUs } from '@/components/WhyChooseUs';
+import { TrustSection } from '@/components/TrustSection';
+import { Gallery } from '@/components/Gallery';
+import { Faq } from '@/components/Faq';
+import { ContactSection } from '@/components/ContactSection';
+import { Eyebrow } from '@/components/ui/Section';
+import { Reveal } from '@/components/motion/Reveal';
+import { ButtonLink } from '@/components/ui/Button';
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      <JsonLd
+        data={schemaGraph(
+          faqSchema(GENERAL_FAQS),
+          itemListSchema(
+            SERVICES.map((service) => ({
+              name: service.heading,
+              url: `/services/${service.slug}`,
+            })),
+          ),
+        )}
+      />
+
+      <Hero />
+      <About />
+      <Services />
+      <Process />
+      <WhyChooseUs />
+      <TrustSection />
+
+      {/* Gallery preview */}
+      <section aria-labelledby="gallery-heading" className="bg-ink py-20 sm:py-24 lg:py-28">
+        <div className="container-page">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <div className="max-w-2xl">
+              <Reveal distance={16}>
+                <Eyebrow>Our Work</Eyebrow>
+              </Reveal>
+              <Reveal delay={0.08}>
+                <h2
+                  id="gallery-heading"
+                  className="mt-5 font-display text-[2rem] font-semibold leading-[1.08] text-bone sm:text-4xl lg:text-[2.9rem]"
+                >
+                  Cranes, crews and lifts
+                </h2>
+              </Reveal>
+              <Reveal delay={0.14}>
+                <p className="mt-5 text-[1.02rem] leading-relaxed text-bone-dim">
+                  Photographs from our equipment and lifting work around Kurukshetra.
+                </p>
+              </Reveal>
+            </div>
+            <ButtonLink href="/gallery" variant="ghost" className="shrink-0 px-0">
+              View full gallery
+              <ArrowRight
+                aria-hidden="true"
+                className="size-4 transition-transform duration-300 group-hover:translate-x-1"
+                strokeWidth={2}
+              />
+            </ButtonLink>
+          </div>
+
+          <div className="mt-12">
+            <Gallery limit={6} showFilters={false} />
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* FAQ */}
+      <section
+        aria-labelledby="faq-heading"
+        className="border-t border-steel/60 bg-charcoal py-20 sm:py-24"
+      >
+        <div className="container-page grid gap-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
+          <div className="lg:sticky lg:top-28 lg:self-start">
+            <Reveal distance={16}>
+              <Eyebrow>Questions</Eyebrow>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <h2
+                id="faq-heading"
+                className="mt-5 font-display text-[2rem] font-semibold leading-[1.08] text-bone sm:text-4xl"
+              >
+                Common questions
+              </h2>
+            </Reveal>
+            <Reveal delay={0.14}>
+              <p className="mt-5 max-w-sm text-[0.95rem] leading-relaxed text-bone-dim">
+                If your question is not answered here, call us — most things about a lift are quicker
+                to sort out in a two-minute conversation.
+              </p>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <Link
+                href="/contact"
+                className="mt-6 inline-flex items-center gap-2 text-[0.85rem] font-semibold text-crane transition-colors hover:text-crane-bright"
+              >
+                Ask us directly
+                <ArrowRight aria-hidden="true" className="size-4" strokeWidth={2} />
+              </Link>
+            </Reveal>
+          </div>
+
+          <Faq faqs={GENERAL_FAQS} />
         </div>
-      </main>
-    </div>
+      </section>
+
+      <ContactSection />
+    </>
   );
 }

@@ -1,26 +1,180 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* -------------------------------------------------------------------------- */
+/*  Design tokens                                                              */
+/*  Industrial palette: deep charcoal and navy ground, crane yellow and warm   */
+/*  ember used sparingly as accents, off-white for text.                       */
+/* -------------------------------------------------------------------------- */
+
+@theme {
+  --color-ink: #070809;
+  --color-charcoal: #0c0e12;
+  --color-graphite: #12161d;
+  --color-navy: #0d1622;
+  --color-steel: #1a222e;
+  --color-steel-light: #28313f;
+
+  --color-crane: #f2b01c;
+  --color-crane-bright: #ffc53d;
+  --color-crane-deep: #d9930a;
+  --color-ember: #ef7c17;
+
+  --color-bone: #f3f1ec;
+  --color-bone-dim: #c9c6bf;
+  --color-muted: #8c9199;
+
+  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-industrial: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* -------------------------------------------------------------------------- */
+/*  Base                                                                       */
+/* -------------------------------------------------------------------------- */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Sticky header clearance for in-page anchors. */
+    scroll-padding-top: 5.5rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-bone);
+    font-family: var(--font-sans);
+    /* Prevents any accidental horizontal scroll from parallax transforms. */
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-crane);
+    color: var(--color-ink);
+  }
+
+  /* Visible, consistent focus ring for keyboard users only. */
+  :focus-visible {
+    outline: 2px solid var(--color-crane);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-color: var(--color-steel-light) var(--color-ink);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* -------------------------------------------------------------------------- */
+/*  Utilities                                                                  */
+/* -------------------------------------------------------------------------- */
+
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 84rem;
+  padding-inline: 1.25rem;
+
+  @media (min-width: 768px) {
+    padding-inline: 2rem;
+  }
+
+  @media (min-width: 1280px) {
+    padding-inline: 3rem;
+  }
+}
+
+/** Thin uppercase label that precedes a section heading. */
+@utility eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-crane);
+}
+
+/** Hairline used to separate sections without a hard border. */
+@utility hairline {
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-crane) 35%, transparent),
+    transparent
+  );
+  height: 1px;
+}
+
+@utility text-gradient-crane {
+  background-image: linear-gradient(100deg, var(--color-crane-bright), var(--color-ember));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Components                                                                 */
+/* -------------------------------------------------------------------------- */
+
+@layer components {
+  .surface-card {
+    background-color: color-mix(in srgb, var(--color-graphite) 85%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-steel-light) 70%, transparent);
+  }
+
+  /* Diagonal hazard stripes, used as a thin industrial accent. */
+  .hazard-stripe {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--color-crane) 0 8px,
+      var(--color-ink) 8px 16px
+    );
+  }
+
+  /* Faint engineering grid used behind darker sections. */
+  .blueprint-grid {
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--color-bone) 4%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-bone) 4%, transparent) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Motion preferences                                                         */
+/*  Every scroll-linked effect is additionally disabled in JS via the          */
+/*  useReducedMotion hook; this is the CSS-level backstop.                     */
+/* -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
