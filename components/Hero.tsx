@@ -8,6 +8,7 @@ import { ArrowRight, MapPin, MouseIcon } from 'lucide-react';
 import { IMAGE_ASSETS } from '@/lib/image-assets';
 import { HERO_FEATURES } from '@/lib/content';
 import { phoneHref } from '@/lib/constants';
+import { useIsCompact } from '@/lib/use-media-query';
 import { ButtonLink } from '@/components/ui/Button';
 import { Icon, type IconName } from '@/components/ui/Icon';
 
@@ -16,12 +17,14 @@ const HERO_IMAGE = IMAGE_ASSETS['mamu-crane-service-hydra-crane-lifting-concrete
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
+  // Phones get half the drift: the same travel is a far larger share of the screen.
+  const compact = useIsCompact();
 
   // Cinematic drift: the photograph moves and scales slightly slower than the
   // page, and the copy lifts away as the next section arrives.
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '16%']);
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1.04, 1.16]);
+  const imageY = useTransform(scrollYProgress, [0, 1], ['0%', compact ? '8%' : '16%']);
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1.04, compact ? 1.1 : 1.16]);
   const copyY = useTransform(scrollYProgress, [0, 1], [0, 70]);
   const copyOpacity = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
 
@@ -77,7 +80,7 @@ export function Hero() {
 
           <h1
             id="hero-heading"
-            className="mt-6 font-display text-[2.7rem] font-bold leading-[0.98] tracking-[-0.03em] text-bone sm:text-6xl lg:text-[4.6rem]"
+            className="mt-5 font-display text-[clamp(2rem,8.5vw+0.25rem,2.75rem)] font-bold leading-[1.04] tracking-[-0.03em] text-bone sm:mt-6 sm:text-6xl sm:leading-[0.98] lg:text-[4.6rem]"
           >
             {['Safe Lifts.', 'Strong Support.'].map((line, i) => (
               <motion.span
@@ -108,7 +111,7 @@ export function Hero() {
             initial={reduceMotion ? false : { y: 16 }}
             animate={{ y: 0 }}
             transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-7 max-w-xl text-[1.02rem] leading-relaxed text-bone-dim sm:text-[1.08rem]"
+            className="mt-5 max-w-xl text-[0.98rem] leading-relaxed text-bone-dim sm:mt-7 sm:text-[1.08rem]"
           >
             Mamu Crane Service provides reliable, professional crane services in Pipli, Kurukshetra
             and nearby areas. Your trusted partner for lifting, shifting and heavy equipment
@@ -119,9 +122,9 @@ export function Hero() {
             initial={reduceMotion ? false : { opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
+            className="mt-8 flex flex-col gap-3 xs:flex-row xs:flex-wrap xs:items-center sm:mt-9"
           >
-            <ButtonLink href="/contact" size="lg">
+            <ButtonLink href="/contact" size="lg-compact" className="w-full xs:w-auto">
               Get a Quote
               <ArrowRight
                 aria-hidden="true"
@@ -129,12 +132,14 @@ export function Hero() {
                 strokeWidth={2}
               />
             </ButtonLink>
-            <ButtonLink href="/services" variant="outline" size="lg">
+            <ButtonLink href="/services" variant="outline" size="lg-compact" className="w-full xs:w-auto">
               Explore Services
             </ButtonLink>
+            {/* The header carries a Call button on small screens, so this
+                secondary prompt only earns its place from sm up. */}
             <a
               href={phoneHref}
-              className="mt-1 text-sm text-muted underline-offset-4 transition-colors hover:text-crane hover:underline sm:ml-2 sm:mt-0"
+              className="hidden text-sm text-muted underline-offset-4 transition-colors hover:text-crane hover:underline sm:ml-2 sm:inline"
             >
               or call us directly
             </a>
@@ -149,7 +154,7 @@ export function Hero() {
         initial={reduceMotion ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.1, duration: 0.8 }}
-        className="group absolute bottom-[10.5rem] right-5 z-10 hidden items-center gap-2.5 text-[0.7rem] font-medium uppercase tracking-[0.2em] text-muted transition-colors hover:text-crane lg:flex xl:right-12"
+        className="group absolute bottom-[10.5rem] right-5 z-10 hidden items-center gap-2.5 text-[0.7rem] font-medium uppercase tracking-[0.2em] text-muted transition-colors hover:text-crane sm:flex xl:right-12"
       >
         <MouseIcon aria-hidden="true" className="size-4" strokeWidth={1.5} />
         Scroll to explore
@@ -163,7 +168,7 @@ export function Hero() {
       </motion.a>
 
       {/* Floating feature strip */}
-      <div className="container-page relative z-10 pb-10 sm:pb-14">
+      <div className="container-page relative z-10 pb-8 pt-4 sm:pb-14 sm:pt-0">
         <motion.ul
           initial={reduceMotion ? false : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -173,13 +178,15 @@ export function Hero() {
           {HERO_FEATURES.map((feature) => (
             <li
               key={feature.title}
-              className="group flex items-center gap-3.5 bg-ink/75 px-4 py-4 transition-colors duration-300 hover:bg-graphite/90 sm:px-6 sm:py-5"
+              /* Stacked and centred on phones; the icon moves beside the text
+                 once there is width for it. */
+              className="group flex flex-col items-center gap-2.5 bg-ink/75 px-3 py-4 text-center transition-colors duration-300 hover:bg-graphite/90 sm:flex-row sm:gap-3.5 sm:px-6 sm:py-5 sm:text-left"
             >
               <span className="flex size-10 shrink-0 items-center justify-center rounded-sm bg-crane/10 text-crane transition-colors duration-300 group-hover:bg-crane group-hover:text-ink">
                 <Icon name={feature.icon as IconName} className="size-[1.15rem]" strokeWidth={1.75} />
               </span>
               <span className="min-w-0">
-                <span className="block text-[0.83rem] font-semibold leading-tight text-bone sm:text-[0.9rem]">
+                <span className="block text-[0.82rem] font-semibold leading-tight text-bone sm:text-[0.9rem]">
                   {feature.title}
                 </span>
                 <span className="mt-0.5 block text-[0.72rem] leading-snug text-muted sm:text-[0.78rem]">

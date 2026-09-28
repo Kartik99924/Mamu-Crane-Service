@@ -3,6 +3,8 @@
 import { motion, useReducedMotion, type Variants } from 'motion/react';
 import type { ElementType, ReactNode } from 'react';
 
+import { useIsCompact } from '@/lib/use-media-query';
+
 type Direction = 'up' | 'down' | 'left' | 'right' | 'none';
 
 type RevealProps = {
@@ -17,6 +19,11 @@ type RevealProps = {
   as?: ElementType;
   /** Fraction of the element that must be visible before animating. */
   amount?: number;
+  /**
+   * Overrides applied below `lg`. Lets a sideways desktop entrance become a
+   * short vertical one on phones, where horizontal travel reads as jitter.
+   */
+  compact?: { direction?: Direction; distance?: number };
 };
 
 const offsetFor = (direction: Direction, distance: number) => {
@@ -48,8 +55,10 @@ export function Reveal({
   className,
   as = 'div',
   amount = 0.25,
+  compact,
 }: RevealProps) {
   const reduceMotion = useReducedMotion();
+  const isCompact = useIsCompact();
   const MotionTag = motion[as as 'div'] ?? motion.div;
 
   if (reduceMotion) {
@@ -57,8 +66,11 @@ export function Reveal({
     return <Tag className={className}>{children}</Tag>;
   }
 
+  const dir = isCompact && compact?.direction ? compact.direction : direction;
+  const dist = isCompact && compact?.distance !== undefined ? compact.distance : distance;
+
   const variants: Variants = {
-    hidden: { opacity: 0, ...offsetFor(direction, distance) },
+    hidden: { opacity: 0, ...offsetFor(dir, dist) },
     visible: {
       opacity: 1,
       x: 0,

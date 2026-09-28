@@ -94,16 +94,14 @@ export function Header() {
             </ul>
           </nav>
 
-          <div className="flex items-center gap-2.5">
-            {/* Wrapped rather than given a `hidden` class directly: the button's
-                own `inline-flex` is the same CSS property and would win. */}
-            <span className="hidden sm:block">
-              <ButtonLink href={phoneHref} size="md">
-                <Phone aria-hidden="true" className="size-4" strokeWidth={2} />
-                <span className="hidden md:inline">{CONTACT.phone.display}</span>
-                <span className="md:hidden">Call Now</span>
-              </ButtonLink>
-            </span>
+          <div className="flex items-center gap-1.5 sm:gap-2.5">
+            {/* Icon-only on the smallest phones (320-359px), where the label
+                would push the menu button off-screen. */}
+            <ButtonLink href={phoneHref} size="md-compact" className="gap-0 xs:gap-2.5">
+              <Phone aria-hidden="true" className="size-4" strokeWidth={2} />
+              <span className="hidden md:inline">{CONTACT.phone.display}</span>
+              <span className="sr-only xs:not-sr-only md:hidden">Call Now</span>
+            </ButtonLink>
 
             <button
               type="button"
@@ -111,7 +109,7 @@ export function Header() {
               aria-label="Open menu"
               aria-expanded={open}
               aria-controls="mobile-nav"
-              className="flex size-11 items-center justify-center rounded-sm border border-steel-light text-bone transition-colors hover:border-crane hover:text-crane lg:hidden"
+              className="flex size-10 items-center justify-center rounded-sm border border-transparent text-bone transition-colors hover:border-crane hover:text-crane sm:size-11 sm:border-steel-light lg:hidden"
             >
               <Menu aria-hidden="true" className="size-5" strokeWidth={1.75} />
             </button>

@@ -27,9 +27,9 @@ export function ContactSection({
       />
 
       <div className="container-page relative">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-16">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:grid-rows-[auto_1fr] lg:items-start lg:gap-x-16 lg:gap-y-0">
           {/* Details */}
-          <div>
+          <div className="lg:col-start-1 lg:row-start-1">
             <Reveal distance={16}>
               <Eyebrow>Get in Touch</Eyebrow>
             </Reveal>
@@ -91,14 +91,17 @@ export function ContactSection({
               </div>
             </Reveal>
 
-            <Reveal delay={0.3}>
-              <MapEmbed className="relative mt-9 h-64 overflow-hidden rounded-sm border border-steel-light/70 bg-graphite sm:h-72" />
-            </Reveal>
           </div>
 
           {/* Form */}
-          <Reveal direction="left" distance={30} delay={0.1}>
-            <div className="relative overflow-hidden rounded-sm border border-steel-light/70 bg-gradient-to-b from-graphite/95 to-graphite/70 p-6 shadow-[0_28px_70px_-40px_rgba(0,0,0,0.95)] backdrop-blur-sm sm:p-8">
+          <Reveal
+            direction="left"
+            distance={30}
+            delay={0.1}
+            compact={{ direction: 'up', distance: 24 }}
+            className="lg:col-start-2 lg:row-start-1 lg:row-span-2"
+          >
+            <div className="relative overflow-hidden rounded-sm border border-steel-light/70 bg-gradient-to-b from-graphite/95 to-graphite/70 p-5 shadow-[0_28px_70px_-40px_rgba(0,0,0,0.95)] backdrop-blur-sm sm:p-8">
               {/* Crane hairline along the top edge, echoing the section rules. */}
               <div
                 aria-hidden="true"
@@ -123,6 +126,11 @@ export function ContactSection({
                 <ContactForm defaultService={defaultService} />
               </div>
             </div>
+          </Reveal>
+
+          {/* Map — last on phones, beneath the details on desktop */}
+          <Reveal delay={0.3} className="lg:col-start-1 lg:row-start-2 lg:mt-9">
+            <MapEmbed className="relative h-64 overflow-hidden rounded-sm border border-steel-light/70 bg-graphite sm:h-72" />
           </Reveal>
         </div>
       </div>

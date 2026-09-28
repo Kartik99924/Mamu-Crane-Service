@@ -7,6 +7,7 @@ import { Check } from 'lucide-react';
 
 import { TRUST_CATEGORIES } from '@/lib/content';
 import { IMAGE_ASSETS } from '@/lib/image-assets';
+import { useIsCompact } from '@/lib/use-media-query';
 import { Eyebrow } from '@/components/ui/Section';
 import { ButtonLink } from '@/components/ui/Button';
 
@@ -20,8 +21,9 @@ const BACKDROP = IMAGE_ASSETS['mamu-crane-service-safety-helmet-site-drawings'];
 export function TrustSection() {
   const ref = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
+  const drift = useIsCompact() ? '3%' : '6%';
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const y = useTransform(scrollYProgress, [0, 1], ['-6%', '6%']);
+  const y = useTransform(scrollYProgress, [0, 1], [`-${drift}`, drift]);
 
   return (
     <section

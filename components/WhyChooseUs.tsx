@@ -23,7 +23,7 @@ export function WhyChooseUs() {
         <div className="grid gap-12 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.1fr)] lg:gap-16">
           {/* Sticky visual column */}
           <div className="lg:sticky lg:top-28 lg:self-start">
-            <Reveal direction="right" distance={36}>
+            <Reveal direction="right" distance={36} compact={{ direction: 'up', distance: 24 }}>
               <div className="relative overflow-hidden rounded-sm">
                 <div className="relative aspect-[4/3] w-full lg:aspect-[3/4]">
                   <Image
@@ -41,8 +41,9 @@ export function WhyChooseUs() {
                   className="absolute inset-0 bg-gradient-to-t from-navy via-navy/25 to-transparent"
                 />
 
-                {/* Floating panel over the image */}
-                <div className="absolute inset-x-4 bottom-4 border border-steel-light/70 bg-ink/88 p-4 backdrop-blur-md sm:inset-x-6 sm:bottom-6 sm:p-5">
+                {/* Panel: beneath the photo on phones, where floating it would
+                    hide most of the image; overlaid from sm as on desktop. */}
+                <div className="relative border-t border-steel-light/70 bg-ink/88 p-4 backdrop-blur-md sm:absolute sm:inset-x-6 sm:bottom-6 sm:border sm:p-5">
                   <span className="hazard-stripe mb-3 block h-1 w-14" aria-hidden="true" />
                   <p className="font-display text-[0.95rem] font-semibold text-bone">
                     Every lift is planned before it starts

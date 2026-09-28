@@ -3,7 +3,7 @@ import type { ComponentProps, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
 type Variant = 'primary' | 'outline' | 'ghost' | 'dark';
-type Size = 'md' | 'lg';
+type Size = 'md' | 'lg' | 'md-compact' | 'lg-compact';
 
 const base =
   'group relative inline-flex items-center justify-center gap-2.5 font-medium whitespace-nowrap ' +
@@ -19,9 +19,17 @@ const variants: Record<Variant, string> = {
   dark: 'bg-graphite text-bone border border-steel-light hover:border-crane/60 hover:text-crane',
 };
 
+/**
+ * The `-compact` sizes start smaller and step up at `sm`, for rows that have to
+ * stay on one line on a phone. They are defined here rather than passed through
+ * `className` because `cn` is a plain join with no conflict resolution: Tailwind
+ * emits `px-4` before `px-7`, so a caller's smaller value would simply lose.
+ */
 const sizes: Record<Size, string> = {
   md: 'h-11 px-5 text-sm rounded-sm',
   lg: 'h-13 px-7 text-[0.95rem] rounded-sm',
+  'md-compact': 'h-10 px-3.5 text-[0.8rem] rounded-sm sm:h-11 sm:px-5 sm:text-sm',
+  'lg-compact': 'h-12 px-4 text-[0.85rem] rounded-sm sm:h-13 sm:px-7 sm:text-[0.95rem]',
 };
 
 type ButtonBaseProps = {

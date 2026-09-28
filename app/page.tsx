@@ -16,7 +16,6 @@ import { Faq } from '@/components/Faq';
 import { ContactSection } from '@/components/ContactSection';
 import { Eyebrow } from '@/components/ui/Section';
 import { Reveal } from '@/components/motion/Reveal';
-import { ButtonLink } from '@/components/ui/Button';
 
 export default function HomePage() {
   return (
@@ -36,9 +35,9 @@ export default function HomePage() {
       <Hero />
       <About />
       <Services />
-      <Process />
-      <WhyChooseUs />
-      <TrustSection />
+      {/* <Process /> */}
+      {/* <WhyChooseUs /> */}
+     
 
       {/* Gallery preview */}
       <section aria-labelledby="gallery-heading" className="bg-ink py-20 sm:py-24 lg:py-28">
@@ -62,14 +61,17 @@ export default function HomePage() {
                 </p>
               </Reveal>
             </div>
-            <ButtonLink href="/gallery" variant="ghost" className="shrink-0 px-0">
+            <Link
+              href="/gallery"
+              className="group flex shrink-0 items-center gap-2 text-[0.85rem] font-medium text-bone transition-colors hover:text-crane sm:text-[0.95rem]"
+            >
               View full gallery
               <ArrowRight
                 aria-hidden="true"
                 className="size-4 transition-transform duration-300 group-hover:translate-x-1"
                 strokeWidth={2}
               />
-            </ButtonLink>
+            </Link>
           </div>
 
           <div className="mt-12">
@@ -77,6 +79,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+ <TrustSection />
 
       {/* FAQ */}
       <section

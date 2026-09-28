@@ -33,34 +33,39 @@ export function StickyMobileCTA() {
       }
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       aria-hidden={!visible}
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-steel-light/70 bg-ink/95 backdrop-blur-lg lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 lg:hidden"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      <div className="grid grid-cols-3 divide-x divide-steel-light/60">
+      {/* Floating panel rather than a full-bleed bar, so the page edge stays visible. */}
+      <div className="m-3 flex items-stretch gap-2 rounded-sm border border-steel-light/70 bg-ink/95 p-2 shadow-[0_18px_44px_-18px_rgba(0,0,0,0.95)] backdrop-blur-lg">
         <a
           href={phoneHref}
           tabIndex={visible ? 0 : -1}
-          className="flex flex-col items-center gap-1 py-3 text-[0.7rem] font-medium text-bone transition-colors active:bg-graphite"
+          className="flex flex-1 items-center justify-center gap-2 rounded-sm border border-steel-light/70 py-3 text-[0.76rem] font-medium text-bone transition-colors active:bg-graphite"
         >
-          <Phone aria-hidden="true" className="size-[1.15rem] text-crane" strokeWidth={1.9} />
-          Call
+          <Phone aria-hidden="true" className="size-4 shrink-0 text-crane" strokeWidth={1.9} />
+          Call Now
         </a>
         <a
           href={whatsappHref}
           target="_blank"
           rel="noopener noreferrer"
           tabIndex={visible ? 0 : -1}
-          className="flex flex-col items-center gap-1 py-3 text-[0.7rem] font-medium text-bone transition-colors active:bg-graphite"
+          className="flex flex-1 items-center justify-center gap-2 rounded-sm border border-steel-light/70 py-3 text-[0.76rem] font-medium text-bone transition-colors active:bg-graphite"
         >
-          <MessageCircle aria-hidden="true" className="size-[1.15rem] text-crane" strokeWidth={1.9} />
+          <MessageCircle
+            aria-hidden="true"
+            className="size-4 shrink-0 text-[#25d366]"
+            strokeWidth={1.9}
+          />
           WhatsApp
         </a>
         <Link
           href="/contact"
           tabIndex={visible ? 0 : -1}
-          className="flex flex-col items-center gap-1 bg-crane py-3 text-[0.7rem] font-semibold text-ink transition-colors active:bg-crane-deep"
+          className="flex flex-1 items-center justify-center gap-2 rounded-sm bg-crane py-3 text-[0.76rem] font-semibold text-ink transition-colors active:bg-crane-deep"
         >
-          <FileText aria-hidden="true" className="size-[1.15rem]" strokeWidth={1.9} />
+          <FileText aria-hidden="true" className="size-4 shrink-0" strokeWidth={1.9} />
           Get Quote
         </Link>
       </div>

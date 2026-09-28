@@ -93,8 +93,10 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         </main>
 
         <Footer />
-        {/* Clears the fixed mobile action bar so it never covers footer links. */}
-        <div aria-hidden="true" className="h-[62px] lg:hidden" />
+        {/* Clears the fixed mobile action bar so it never covers footer links.
+            Matches the bar's rendered height (card + margins) plus the home
+            indicator inset on phones that have one. */}
+        <div aria-hidden="true" className="h-[calc(5.5rem+env(safe-area-inset-bottom))] lg:hidden" />
         <StickyMobileCTA />
       </body>
     </html>

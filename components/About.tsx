@@ -18,9 +18,15 @@ const CAPABILITIES = [
   { label: 'Supplied', value: 'Operated', note: 'Operator included' },
 ];
 
+/**
+ * Reads top-to-bottom on phones (intro, image, body) and as two columns from
+ * `lg`, where the imagery spans both rows on the left. The three blocks are
+ * direct grid children with explicit `lg:` coordinates, so the desktop layout
+ * is unchanged and nothing is rendered twice for the two arrangements.
+ */
 export function About() {
   return (
-    <section id="about" className="relative overflow-hidden bg-charcoal py-20 sm:py-24 lg:py-32">
+    <section id="about" className="relative overflow-hidden bg-charcoal py-16 sm:py-24 lg:py-32">
       <div aria-hidden="true" className="blueprint-grid absolute inset-0 opacity-60" />
       <div
         aria-hidden="true"
@@ -28,9 +34,23 @@ export function About() {
       />
 
       <div className="container-page relative">
-        <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center lg:gap-20">
+        <div className="grid gap-8 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:grid-rows-[auto_1fr] lg:items-start lg:gap-x-20 lg:gap-y-0">
+          {/* Intro */}
+          <div className="lg:col-start-2 lg:row-start-1">
+            <Reveal distance={18}>
+              <Eyebrow>About Mamu Crane Service</Eyebrow>
+            </Reveal>
+
+            <Reveal delay={0.08}>
+              <h2 className="mt-5 font-display text-[2rem] font-semibold leading-[1.08] text-bone sm:text-4xl lg:text-[2.9rem]">
+                Your local crane service partner in{' '}
+                <span className="text-gradient-crane">Kurukshetra</span>
+              </h2>
+            </Reveal>
+          </div>
+
           {/* Layered imagery */}
-          <div className="relative">
+          <div className="relative lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:self-center">
             {/* Vertical section label */}
             <span
               aria-hidden="true"
@@ -39,7 +59,7 @@ export function About() {
               About Us
             </span>
 
-            <Reveal direction="right" distance={40}>
+            <Reveal direction="right" distance={40} compact={{ direction: 'up', distance: 24 }}>
               <div className="relative ml-0 lg:ml-12">
                 <Parallax speed={40} className="overflow-hidden rounded-sm">
                   <div className="relative aspect-[4/3] w-full">
@@ -61,14 +81,15 @@ export function About() {
                 {/* corner rule */}
                 <span
                   aria-hidden="true"
-                  className="absolute -bottom-3 -right-3 h-20 w-20 border-b-2 border-r-2 border-crane/70"
+                  className="absolute -bottom-2 -right-2 h-12 w-12 border-b-2 border-r-2 border-crane/70 sm:-bottom-3 sm:-right-3 sm:h-20 sm:w-20"
                 />
               </div>
             </Reveal>
 
-            {/* Offset overlapping card */}
-            <Reveal direction="up" distance={36} delay={0.16}>
-              <div className="relative -mt-16 ml-4 w-[58%] max-w-[17rem] overflow-hidden rounded-sm border border-steel-light/80 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.9)] sm:-mt-20 sm:ml-8 lg:-mt-24 lg:ml-0">
+            {/* Offset overlapping card. Smaller on phones so the pair reads as
+                one composition rather than two stacked photographs. */}
+            <Reveal direction="up" distance={36} delay={0.16} compact={{ distance: 20 }}>
+              <div className="relative -mt-14 ml-3 w-[46%] max-w-[17rem] overflow-hidden rounded-sm border border-steel-light/80 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.9)] sm:-mt-20 sm:ml-8 sm:w-[58%] lg:-mt-24 lg:ml-0">
                 <div className="relative aspect-[5/6] w-full">
                   <Image
                     src={SECONDARY.src}
@@ -94,20 +115,9 @@ export function About() {
             </Reveal>
           </div>
 
-          {/* Copy */}
-          <div>
-            <Reveal distance={18}>
-              <Eyebrow>About Mamu Crane Service</Eyebrow>
-            </Reveal>
-
-            <Reveal delay={0.08}>
-              <h2 className="mt-5 font-display text-[2rem] font-semibold leading-[1.08] text-bone sm:text-4xl lg:text-[2.9rem]">
-                Your local crane service partner in{' '}
-                <span className="text-gradient-crane">Kurukshetra</span>
-              </h2>
-            </Reveal>
-
-            <RevealGroup className="mt-6 space-y-5 text-[1rem] leading-relaxed text-bone-dim" delay={0.1}>
+          {/* Body */}
+          <div className="lg:col-start-2 lg:row-start-2 lg:mt-6">
+            <RevealGroup className="space-y-5 text-[1rem] leading-relaxed text-bone-dim" delay={0.1}>
               <RevealItem as="p">
                 Mamu Crane Service is a crane service provider based in Pipli, Kurukshetra. We work
                 with builders, contractors, factories, workshops and individual customers who need
@@ -127,16 +137,19 @@ export function About() {
             </RevealGroup>
 
             {/* Capability cards */}
-            <RevealGroup className="mt-10 grid grid-cols-3 gap-px overflow-hidden rounded-sm border border-steel-light/70 bg-steel-light/60" delay={0.14}>
+            <RevealGroup
+              className="mt-8 grid grid-cols-3 gap-px overflow-hidden rounded-sm border border-steel-light/70 bg-steel-light/60 sm:mt-10"
+              delay={0.14}
+            >
               {CAPABILITIES.map((item) => (
-                <RevealItem key={item.label} className="bg-graphite/80 px-3 py-4 sm:px-5 sm:py-5">
-                  <span className="block text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-muted">
+                <RevealItem key={item.label} className="bg-graphite/80 px-2.5 py-4 xs:px-3 sm:px-5 sm:py-5">
+                  <span className="block text-[0.58rem] font-semibold uppercase tracking-[0.16em] text-muted sm:text-[0.62rem] sm:tracking-[0.18em]">
                     {item.label}
                   </span>
-                  <span className="mt-2 block font-display text-[1.05rem] font-bold leading-tight text-crane sm:text-xl">
+                  <span className="mt-2 block font-display text-[0.9rem] font-bold leading-tight text-crane xs:text-[0.95rem] sm:text-xl">
                     {item.value}
                   </span>
-                  <span className="mt-1 block text-[0.72rem] leading-snug text-bone-dim">
+                  <span className="mt-1 block text-[0.7rem] leading-snug text-bone-dim sm:text-[0.72rem]">
                     {item.note}
                   </span>
                 </RevealItem>
@@ -144,7 +157,7 @@ export function About() {
             </RevealGroup>
 
             <Reveal delay={0.2}>
-              <div className="mt-9 flex flex-wrap items-center gap-3">
+              <div className="mt-8 flex flex-wrap items-center gap-3 sm:mt-9">
                 <ButtonLink href="/about" variant="outline">
                   More about us
                   <ArrowRight

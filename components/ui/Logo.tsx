@@ -11,7 +11,7 @@ export function Logo({ className, compact = false }: { className?: string; compa
       <svg
         viewBox="0 0 28 34"
         aria-hidden="true"
-        className="h-8 w-auto shrink-0 text-crane"
+        className="h-7 w-auto shrink-0 text-crane sm:h-8"
         fill="none"
       >
         {/* jib */}
@@ -33,11 +33,11 @@ export function Logo({ className, compact = false }: { className?: string; compa
       <span className="flex flex-col leading-none">
         {/* Tracking and size step down on narrow screens so the wordmark never
             crowds the menu button. */}
-        <span className="font-display text-[0.82rem] font-bold uppercase tracking-[0.08em] text-bone sm:text-[0.97rem] sm:tracking-[0.13em]">
+        <span className="font-display text-[0.72rem] font-bold uppercase tracking-[0.03em] text-bone sm:text-[0.97rem] sm:tracking-[0.13em]">
           {BUSINESS.name}
         </span>
         {!compact && (
-          <span className="mt-1 hidden text-[0.58rem] font-medium uppercase tracking-[0.34em] text-crane/85 sm:block">
+          <span className="mt-1 block text-[0.5rem] font-medium uppercase tracking-[0.28em] text-crane/85 sm:text-[0.58rem] sm:tracking-[0.34em]">
             {BUSINESS.tagline}
           </span>
         )}

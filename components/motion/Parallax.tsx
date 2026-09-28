@@ -3,6 +3,8 @@
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
 import { useRef, type ReactNode } from 'react';
 
+import { useIsCompact } from '@/lib/use-media-query';
+
 /**
  * Moves its children vertically as the section passes through the viewport.
  * `speed` is the total travel in pixels across the full scroll range;
@@ -22,6 +24,8 @@ export function Parallax({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
+  // Half the travel on phones: the same pixels are a much larger share of the screen.
+  const travel = useIsCompact() ? speed / 2 : speed;
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -30,7 +34,7 @@ export function Parallax({
 
   // Smoothing keeps the movement from tracking the scroll wheel step for step.
   const eased = useSpring(scrollYProgress, { stiffness: 90, damping: 30, mass: 0.4 });
-  const y = useTransform(eased, [0, 1], [-speed / 2, speed / 2]);
+  const y = useTransform(eased, [0, 1], [-travel / 2, travel / 2]);
   const s = useTransform(eased, [0, 1], [1.08, 1.18]);
 
   if (reduceMotion) {
